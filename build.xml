@@ -513,19 +513,21 @@
          <file name="bar.js"/>
 
         It's not magic, but at least now you can bypass the automatic concatenation.
+    -->
 
     <target name="-js.main.concat" depends="-js.all.minify" description="(PRIVATE) Concatenates the JS files in dir.js">
         <filelist id="scripts.toconcat" dir="./${dir.intermediate}/">
-          <file name="js/plugins.js"/>
-          <file name="js/scripts.js"/>
+            <file name="${dir.js}/plugins.js"/>
+            <file name="${dir.js}/resources.js"/>
+            <file name="${dir.js}/${file.root.script}"/>
         </filelist>
 
-        <concat destfile="./${dir.intermediate}/${dir.js}/scripts-concat.min.js" overwrite="no">
+        <concat destfile="./${dir.intermediate}/${dir.js}/scripts-concat.js" overwrite="no">
             <filelist refid="scripts.toconcat"/>
         </concat>
     </target>
-    -->
 
+    <!--
     <target name="-js.main.concat" depends="-js.all.minify" description="(PRIVATE) Concatenates the JS files in dir.js">
         <filelist id="file.root" dir="${dir.source}" files="${file.root.page}"/>
         <echo message="Concatenating Main JS scripts based on ${file.root.page}..."/>
@@ -539,9 +541,9 @@
             <arg value="src" />
         </exec>
 
-        <!-- Concatenate scripts to intermediate/js/libs/libs.js -->
-        <!-- overwrite=no here means not to overwrite if the target is newer than the sources -->
-        <!-- Filter out byte order marks (see http://stackoverflow.com/questions/2742735/get-ant-concat-to-ignore-boms) -->
+        [> Concatenate scripts to intermediate/js/libs/libs.js <]
+        [> overwrite=no here means not to overwrite if the target is newer than the sources <]
+        [> Filter out byte order marks (see http://stackoverflow.com/questions/2742735/get-ant-concat-to-ignore-boms) <]
         <concat destfile="./${dir.intermediate}/${dir.js}/scripts-concat.min.js" overwrite="no">
             <filelist dir="./${dir.intermediate}/" files="${scriptsToConcat}" />
             <filterchain>
@@ -550,6 +552,7 @@
         </concat>
 
     </target>
+    -->
 
     <target name="-js.scripts.concat" depends="-js.main.concat" if="build.concat.scripts">
         <echo message="Concatenating library file with main script file"/>
