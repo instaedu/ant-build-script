@@ -554,8 +554,28 @@
     </target>
     -->
 
-    <target name="-js.scripts.concat" depends="-js.main.concat" if="build.concat.scripts">
+    <target name="-js.mylibs.concat" depends="-js.all.minify" description="(PRIVATE) Concatenates the JS files in dir.js.mylibs">
+        <mkdir dir="./${dir.intermediate}/${dir.js.mylibs}"/>
+
+        <echo message="Concatenating JS libraries"/>
+        <!-- overwrite=no here means not to overwrite if the target is newer than the sources -->
+        <concat destfile="./${dir.intermediate}/${dir.js}/mylibs-concat.js" overwrite="no">
+            <fileset dir="./${dir.intermediate}/${dir.js.mylibs}/"
+                includes="**/*.js"
+                excludes="${file.js.bypass}"/>
+        </concat>
+    </target>
+
+    <target name="-js.scripts.concat" depends="-js.main.concat,-js.mylibs.concat" if="build.concat.scripts">
         <echo message="Concatenating library file with main script file"/>
+        <!-- overwrite=no here means not to overwrite if the target is newer than the sources -->
+        <concat destfile="./${dir.intermediate}/${dir.js}/scripts-concat.min.js" overwrite="no">
+            <filelist dir="./${dir.intermediate}/${dir.js}/">
+                <file name="scripts-concat.js"/>
+                <file name="mylibs-concat.js"/>
+            </filelist>
+        </concat>
+
         <if>
             <available file="${dir.intermediate}/${dir.js}/scripts-concat.min.js"/>
             <then>
@@ -568,6 +588,7 @@
 
         <!-- cachebust modules directory name -->
         <!-- Concatinate only to generate checksum. Concatinated file not actually published. -->
+        <!--
         <if>
             <available file="./${dir.intermediate}/${dir.js.modules}"/>
             <then>
@@ -590,6 +611,7 @@
                 </if>
             </then>
         </if>
+        -->
     </target>
     <target name="-js.all.minify" depends="-mkdirs" description="(PRIVATE) Minifies the scripts.js files created by js.scripts.concat">
         <echo message="Minifying scripts"/>
