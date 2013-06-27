@@ -613,6 +613,7 @@
         </if>
         -->
     </target>
+
     <target name="-js.all.minify" depends="-mkdirs" description="(PRIVATE) Minifies the scripts.js files created by js.scripts.concat">
         <echo message="Minifying scripts"/>
         <copy todir="${dir.intermediate}/${dir.js}">
@@ -689,7 +690,7 @@
             <else>
                 <replaceregexp
                     match="&lt;!-- //-beg- ${build.jstoken} [\d\w\s\W]*&lt;script.*src=['&quot;]?(.*)/${file.root.script}(?:\?.*)?['&quot;]?\s*&gt;\s*&lt;/script&gt;[\d\w\s\W]*&lt;!-- //-end- ${build.jstoken} --&gt;"
-                    replace="&lt;script src=&quot;\1/${scripts.sha}.js&quot; ${scripts.async}  ${scripts.defer} &gt;&lt;/script&gt;"
+                    replace="&lt;script&gt;function jsOnload() { afterLoad(); {% block js %}{% endblock %} }; function loadJs() { $.ajax({url:'\1/${scripts.sha}.js\',dataType:\'script\',cache:true,success:jsOnload}); } $(document)\.ready(loadJs); &lt;/script&gt;"
                     flags="gs">
                     <fileset dir="${dir.intermediate}" includes="${page-files}" />
                 </replaceregexp>
