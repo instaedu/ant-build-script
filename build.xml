@@ -784,7 +784,6 @@
             <arg value="-jar"/>
             <arg path="${dir.build.tools}/${tool.htmlcompressor}"/>
             <arg line="--remove-quotes"/>
-            <arg line="--compress-js"/>
             <arg line="--compress-css"/>
             <arg line="--preserve-php"/>
             <arg line="--preserve-ssi"/>
