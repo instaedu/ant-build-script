@@ -562,7 +562,7 @@
         <concat destfile="./${dir.intermediate}/${dir.js}/mylibs-concat.js" overwrite="no">
             <fileset dir="./${dir.intermediate}/${dir.js.mylibs}/"
                 includes="**/*.js"
-                excludes="${file.js.bypass}"/>
+                excludes="${file.js.mylibs.bypass}"/>
         </concat>
     </target>
 
@@ -617,10 +617,10 @@
     <target name="-js.all.minify" depends="-mkdirs" description="(PRIVATE) Minifies the scripts.js files created by js.scripts.concat">
         <echo message="Minifying scripts"/>
         <copy todir="${dir.intermediate}/${dir.js}">
-            <fileset dir="${dir.source}/${dir.js}" includes="${file.js.bypass}, **/*.min.js"/>
+            <fileset dir="${dir.source}/${dir.js}" excludes="${file.js.ignore}" includes="${file.js.bypass}, **/*.min.js" />
         </copy>
         <apply executable="java" parallel="false">
-            <fileset dir="${dir.source}/${dir.js}" excludes="${file.js.bypass}, **/*.min.js" includes="**/*.js">
+            <fileset dir="${dir.source}/${dir.js}" excludes="${file.js.bypass}, ${file.js.ignore}, **/*.min.js" includes="**/*.js">
                 <exclude name="${dir.js}/otherscripts-concat.js"/>
                 <exclude name="${dir.js}/scripts-concat.js"/>
             </fileset>
@@ -642,7 +642,7 @@
         <!-- at this point all js files are minified with their original names -->
 
         <copy todir="${dir.publish}/${dir.js}">
-            <fileset dir="${dir.intermediate}/${dir.js}" includes="${file.js.bypass}, ${slug.libs}/*, ${slug.modules}/*">
+            <fileset dir="${dir.intermediate}/${dir.js}" includes="${file.js.bypass}, ${slug.libs}/*, ${slug.modules}/*" excludes="${file.js.ignore}">
                 <exclude name="scripts-concat.js"/>
                 <exclude name="scripts-concat.min.js"/>
                 <exclude name="otherscripts-concat.js"/>
