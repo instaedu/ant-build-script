@@ -628,6 +628,8 @@
             <arg path="./${dir.build.tools}/${tool.compiler}"/>
             <arg line="--js"/>
             <srcfile/>
+            <arg line="--language_in" />
+            <arg value="ECMASCRIPT5" />
             <arg line="--compilation_level" />
             <arg value="${scripts.compilation.level}" />
             <arg line="--warning_level" />
