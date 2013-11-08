@@ -394,7 +394,6 @@
                  -js.main.concat,
                  -js.scripts.concat,
                  -css,
-                 -htmlcompress,
                  -copy,
                  -jsdoc3"/>
 
